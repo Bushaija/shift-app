@@ -7,6 +7,7 @@ import * as React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalHost } from "@/components/primitives/portal";
 import { DatabaseProvider } from "@/db/provider";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { DARK_THEME, LIGHT_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/useColorScheme";
@@ -66,22 +67,24 @@ export default function RootLayout() {
   }
 
   return (
-    <DatabaseProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DARK_THEME : LIGHT_THEME}>
-        <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="onboarding" />
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="auth" />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-      <PortalHost />
-    </DatabaseProvider>
+    <ErrorBoundary>
+      <DatabaseProvider>
+        <ThemeProvider value={colorScheme === "dark" ? DARK_THEME : LIGHT_THEME}>
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="onboarding" />
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="auth" />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </ThemeProvider>
+        <PortalHost />
+      </DatabaseProvider>
+    </ErrorBoundary>
   );
 }

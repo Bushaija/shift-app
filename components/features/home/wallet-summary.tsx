@@ -68,7 +68,7 @@ export function WalletSummary({ className = '' }: WalletSummaryProps) {
                 <Text className="font-medium text-gray-900">{shift.title}</Text>
                 <Text className="text-sm text-gray-600">{shift.facilityName}</Text>
               </View>
-              <Text className="font-semibold text-blue-600">${shift.hourlyRate}/hr</Text>
+              <Text className="font-semibold text-blue-600">RWF {shift.hourlyRate}/hr</Text>
             </View>
           ))}
           {topShifts.length === 0 && (

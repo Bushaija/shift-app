@@ -20,7 +20,7 @@ export function GreetingHeader({ className = '' }: GreetingHeaderProps) {
   const greeting = getGreeting();
 
   return (
-    <View className={`flex flex-col gap-1 justify-center items-center py-8 ${className}`}>
+    <View className={`flex flex-col gap-1 justify-center items-center py-4 ${className}`}>
       <Text className="text-xl font-semibold text-gray-900">
         {greeting}, {firstName}! 👋
       </Text>
