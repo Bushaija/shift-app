@@ -27,11 +27,13 @@ export default function TabLayout() {
         <View className="absolute -top-2 w-8 h-0.5 bg-blue-500 rounded-full" />
       )}
 
-      {/* Icon container with background */}
-      <View className={`
-        p-2 rounded-xl transition-all duration-200
-        ${focused ? 'bg-blue-50 scale-105' : 'bg-transparent scale-100'}
-      `}>
+      {/* Icon container with background - removed transform classes */}
+      <View
+        className={`p-2 rounded-xl ${focused ? 'bg-blue-50' : 'bg-transparent'}`}
+        style={{
+          transform: [{ scale: focused ? 1.05 : 1 }],
+        }}
+      >
         <Icon
           size={focused ? size + 2 : size}
           color={color}
@@ -55,7 +57,6 @@ export default function TabLayout() {
           paddingBottom: Platform.OS === 'ios' ? 24 : 12,
           paddingTop: 12,
           height: 80,
-          // Modern shadow
           shadowColor: '#000000',
           shadowOffset: {
             width: 0,
@@ -64,7 +65,6 @@ export default function TabLayout() {
           shadowOpacity: 0.08,
           shadowRadius: 16,
           elevation: 12,
-          // Rounded corners
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
         },
