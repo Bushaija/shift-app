@@ -6,6 +6,7 @@ import { OnboardingCard } from '@/components/onboarding/onboarding-card';
 import { PaginationDots } from '@/components/onboarding/pagination-dots';
 import { ProgressIndicator } from '@/components/onboarding/progress-indicator';
 import { Button } from '@/components/ui/button';
+import { setItem } from '@/lib/storage';
 
 const onboardingData = [
   {
@@ -34,16 +35,20 @@ const onboardingData = [
 export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentIndex < onboardingData.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
+      // Mark onboarding as completed
+      await setItem('hasCompletedOnboarding', 'true');
       // Navigate to authentication
       router.replace('/auth/signin');
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
+    // Mark onboarding as completed
+    await setItem('hasCompletedOnboarding', 'true');
     router.replace('/auth/signin');
   };
 

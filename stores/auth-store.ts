@@ -185,16 +185,36 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       // Session management
       checkAuth: async () => {
-        const token = await getItem('auth_token');
+        const token = await getItem<string>('auth_token');
 
         if (token) {
           // TODO: Validate token with API
           // const user = await authApi.validateToken(token);
 
           // For now, just set as authenticated if token exists
-          set({ token, isAuthenticated: true });
+          // Also set a default user if none exists
+          const currentUser = get().user;
+          if (!currentUser) {
+            const defaultUser: User = {
+              id: '1',
+              email: 'demo@example.com',
+              firstName: 'Robert',
+              lastName: 'Johnson',
+              phone: '+1 (555) 123-4567',
+              licenseType: 'RN',
+              licenseNumber: 'RN123456',
+              specialties: ['Emergency', 'ICU'],
+              hourlyRate: 45,
+              isActive: true,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            };
+            set({ token, isAuthenticated: true, user: defaultUser });
+          } else {
+            set({ token, isAuthenticated: true });
+          }
         } else {
-          set({ token: null, isAuthenticated: false });
+          set({ token: null, isAuthenticated: false, user: null });
         }
       },
 
@@ -221,11 +241,11 @@ export const useAuthStore = create<AuthState & AuthActions>()(
     }),
     {
       name: 'auth-storage',
-      storage: createJSONStorage(() => ({
-        getItem: async (name: string) => {
-          const value = await getItem(name);
-          return value ? JSON.parse(value) : null;
-        },
+             storage: createJSONStorage(() => ({
+         getItem: async (name: string) => {
+           const value = await getItem<string>(name);
+           return value;
+         },
         setItem: async (name: string, value: any) => {
           await setItem(name, JSON.stringify(value));
         },

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { getItem, setItem } from '@/lib/storage';
+import { useNotificationsStore } from './notifications-store';
 
 export interface Shift {
   id: string;
@@ -109,7 +110,7 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
             {
               id: '1',
               facilityId: '1',
-              facilityName: 'City General Hospital',
+              facilityName: 'King Faisal Hospital',
               title: 'RN - Emergency Department',
               description: 'Emergency department nursing position requiring critical care experience.',
               department: 'Emergency',
@@ -117,18 +118,18 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
               shiftDate: '2024-01-15',
               startTime: '19:00',
               endTime: '03:00',
-              hourlyRate: 45,
+              hourlyRate: 18000,
               totalHours: 8,
               isUrgent: true,
               status: 'open',
               createdAt: new Date().toISOString(),
               distance: 2.5,
-              location: 'Downtown Medical District',
+              location: 'Gasabo District',
             },
             {
               id: '2',
               facilityId: '2',
-              facilityName: 'Memorial Medical Center',
+              facilityName: 'La Croix du Sud Hospital',
               title: 'LPN - ICU',
               description: 'Intensive care unit position for experienced LPN.',
               department: 'ICU',
@@ -136,18 +137,18 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
               shiftDate: '2024-01-16',
               startTime: '06:00',
               endTime: '18:00',
-              hourlyRate: 38,
+              hourlyRate: 25000,
               totalHours: 12,
               isUrgent: false,
               status: 'open',
               createdAt: new Date().toISOString(),
               distance: 5.2,
-              location: 'Northside Medical Complex',
+              location: 'Gasabo District',
             },
             {
               id: '3',
               facilityId: '3',
-              facilityName: 'Regional Healthcare',
+              facilityName: 'Kibagabaga Hospital',
               title: 'CNA - Medical Surgical',
               description: 'Medical surgical unit position for certified nursing assistant.',
               department: 'Medical Surgical',
@@ -155,13 +156,13 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
               shiftDate: '2024-01-19',
               startTime: '15:00',
               endTime: '23:00',
-              hourlyRate: 28,
+              hourlyRate: 12000,
               totalHours: 8,
               isUrgent: false,
               status: 'open',
               createdAt: new Date().toISOString(),
               distance: 8.1,
-              location: 'Eastside Healthcare Campus',
+              location: 'Gasabo District',
             },
           ];
 
@@ -276,6 +277,10 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
               userBookings: [...state.userBookings, newBooking],
               isLoading: false,
             }));
+
+            // Send notification
+            const notificationsStore = useNotificationsStore.getState();
+            notificationsStore.notifyBookingPending(shift.title, shift.facilityName);
           }
 
         } catch (error) {
@@ -296,6 +301,8 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
           // Mock delay
           await new Promise(resolve => setTimeout(resolve, 500));
 
+          const booking = get().userBookings.find(b => b.id === bookingId);
+
           set(state => ({
             userBookings: state.userBookings.map(booking =>
               booking.id === bookingId
@@ -304,6 +311,12 @@ export const useShiftsStore = create<ShiftsState & ShiftsActions>()(
             ),
             isLoading: false,
           }));
+
+          // Send notification
+          if (booking?.shift) {
+            const notificationsStore = useNotificationsStore.getState();
+            notificationsStore.notifyBookingCancelled(booking.shift.title, booking.shift.facilityName);
+          }
 
         } catch (error) {
           set({

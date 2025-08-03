@@ -26,6 +26,8 @@ export function DatabaseProvider({ children }: PropsWithChildren) {
       .catch((err) => {
         console.error("Database initialization failed:", err);
         setError(err);
+        // Don't block the app if database fails to initialize
+        // The app can still function without the database for basic navigation
       });
   }, []);
 

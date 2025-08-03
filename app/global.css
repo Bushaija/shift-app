@@ -25,6 +25,16 @@
     --ring: 240 5.9% 10%;
   }
 
+  /* Global background styles */
+  body {
+    background-color: #FFFFFF;
+  }
+
+  /* React Native specific background */
+  * {
+    background-color: #FFFFFF;
+  }
+
   .dark:root {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;

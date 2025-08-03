@@ -38,6 +38,17 @@ export default function SignInScreen() {
     }
   };
 
+  // For demo purposes, you can use any email/password
+  const handleDemoSignIn = async () => {
+    setEmail('demo@example.com');
+    setPassword('password123');
+    try {
+      await signIn('demo@example.com', 'password123');
+    } catch (error) {
+      // Error is handled by the store
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       <View className="flex-1 justify-center px-6">
@@ -91,9 +102,26 @@ export default function SignInScreen() {
               </Text>
             </Button>
 
+            {/* Demo sign-in button for testing */}
+            <TouchableOpacity
+              onPress={handleDemoSignIn}
+              className="bg-green-600 py-3 rounded-lg"
+              disabled={isLoading}
+            >
+              <Text className="text-white text-center font-medium">
+                Demo Sign In (Any credentials work)
+              </Text>
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={() => router.push('/auth/signup')}>
               <Text className="text-blue-600 text-center">
                 Don't have an account? Sign up
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => router.push('/auth/forgot-password')}>
+              <Text className="text-blue-600 text-center">
+                Forgot your password?
               </Text>
             </TouchableOpacity>
           </View>

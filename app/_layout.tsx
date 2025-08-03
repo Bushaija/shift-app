@@ -14,8 +14,6 @@ import { getItem, setItem } from "@/lib/storage";
 import { useFrameworkReady } from "@/hooks/useFrameworkReady";
 import { Inter_400Regular, Inter_600SemiBold, useFonts } from '@expo-google-fonts/inter';
 import { useEffect } from "react";
-import { useAuthStore } from "@/stores/auth-store";
-
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,7 +21,7 @@ export {
 } from "expo-router";
 
 export const unstable_settings = {
-  initialRouteName: "onboarding",
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before getting the color scheme.
@@ -31,7 +29,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { colorScheme, setColorScheme } = useColorScheme();
-  const { checkAuth } = useAuthStore();
 
   const [loaded, error] = useFonts({
     Inter_400Regular,
@@ -39,11 +36,6 @@ export default function RootLayout() {
   });
 
   useFrameworkReady();
-
-  // Check authentication status on app startup
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   useEffect(() => {
     const theme = getItem("theme");
@@ -65,6 +57,13 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  if (!loaded) {
+    return null; // Keep splash screen visible
+  }
+
+  if (error) {
+    console.error('Font loading error:', error);
+  }
 
   return (
     <DatabaseProvider>
@@ -72,10 +71,12 @@ export default function RootLayout() {
         <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         <GestureHandlerRootView style={{ flex: 1 }}>
           <BottomSheetModalProvider>
-            <Stack>
-              <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="auth" options={{ headerShown: false }} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="onboarding" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="auth" />
+              <Stack.Screen name="+not-found" />
             </Stack>
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
