@@ -11,24 +11,31 @@ import { setItem } from '@/lib/storage';
 const onboardingData = [
   {
     id: 1,
-    title: 'Welcome to Healthcare Staffing',
-    subtitle: 'Find flexible shifts that fit your schedule',
-    description: 'Connect with healthcare facilities and find the perfect shifts that match your skills and availability.',
+    title: 'Welcome to NurseConnect',
+    subtitle: 'Your healthcare staffing solution',
+    description: 'Connect with healthcare facilities and find flexible nursing shifts that match your skills and schedule.',
     icon: '👩‍⚕️',
   },
   {
     id: 2,
-    title: 'Browse & Book Shifts',
-    subtitle: 'Simple and fast booking process',
-    description: 'Browse available shifts by location, specialty, and pay rate. Book with just a few taps.',
-    icon: '📅',
+    title: 'Browse Available Shifts',
+    subtitle: 'Find the perfect nursing opportunities',
+    description: 'Browse shifts by location, specialty, shift type, and pay rate. Filter and find exactly what you need.',
+    icon: '📋',
   },
   {
     id: 3,
-    title: 'Track Your Earnings',
-    subtitle: 'Monitor your income and payments',
-    description: 'Keep track of your shifts, earnings, and payment history all in one place.',
-    icon: '💰',
+    title: 'Easy Shift Management',
+    subtitle: 'Track your schedule and earnings',
+    description: 'Manage your shifts, view your schedule, and track your earnings all in one convenient app.',
+    icon: '📊',
+  },
+  {
+    id: 4,
+    title: 'Secure & Reliable',
+    subtitle: 'Your data is protected',
+    description: 'Your personal information and shift data are securely stored and protected with industry-standard security.',
+    icon: '🔒',
   },
 ];
 
@@ -78,15 +85,16 @@ export default function OnboardingScreen() {
       </View>
 
       <View className="px-5 pb-10 space-y-8">
-        <PaginationDots
-          total={onboardingData.length}
-          current={currentIndex}
-          onDotPress={handleDotPress}
-        />
-
+        <View className="flex-row justify-center items-center">
+          <PaginationDots
+            total={onboardingData.length}
+            current={currentIndex}
+            onDotPress={handleDotPress}
+          />
+        </View>
         <Button
           onPress={handleNext}
-          className="bg-blue-600 py-4 rounded-xl items-center"
+          className="bg-blue-600 py-4 rounded-xl items-center mt-8"
         >
           <Text className="text-white text-lg font-semibold">
             {currentIndex === onboardingData.length - 1 ? 'Get Started' : 'Next'}

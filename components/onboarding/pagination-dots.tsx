@@ -9,7 +9,7 @@ interface PaginationDotsProps {
 
 export function PaginationDots({ total, current, onDotPress }: PaginationDotsProps) {
   return (
-    <View className="flex-row justify-center space-x-2">
+    <View className="flex-row justify-center space-x-2 flex gap-2">
       {Array.from({ length: total }).map((_, index) => (
         <TouchableOpacity
           key={index}

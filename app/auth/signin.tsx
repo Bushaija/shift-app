@@ -54,21 +54,21 @@ export default function SignInScreen() {
       <View className="flex-1 justify-center px-6">
         <Card className="p-8 bg-white rounded-2xl shadow-lg">
           <View className="space-y-6">
-            <View className="items-center space-y-2">
-              <Text className="text-3xl font-bold text-gray-900">Welcome Back</Text>
-              <Text className="text-gray-600 text-center">
-                Sign in to your healthcare staffing account
+            <View className="items-center space-y-2 mb-8">
+              <Text className="text-2xl font-bold text-gray-900">Welcome Back</Text>
+              <Text className="text-gray-600 text-center text-md">
+                Sign in to your Shift-Med account
               </Text>
             </View>
 
-            <View className="space-y-4">
+            <View className="flex flex-col gap-4 space-y-4">
               <View>
                 <Text className="text-sm font-medium text-gray-700 mb-2">Email</Text>
                 <TextInput
                   value={email}
                   onChangeText={setEmail}
                   placeholder="Enter your email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white"
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
@@ -80,21 +80,21 @@ export default function SignInScreen() {
                   value={password}
                   onChangeText={setPassword}
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white"
+                  className="w-full px-4 py-2 text-black border border-gray-300 rounded-md bg-white"
                   secureTextEntry
                 />
               </View>
             </View>
 
             {error && (
-              <View className="bg-red-50 p-3 rounded-lg border border-red-200">
+              <View className="bg-red-50 p-3 rounded-lg border border-red-200 mt-8">
                 <Text className="text-red-600 text-center">{error}</Text>
               </View>
             )}
 
             <Button
               onPress={handleSignIn}
-              className="bg-blue-600 py-4 rounded-lg"
+              className="bg-blue-600 py-4 rounded-full mt-8"
               disabled={isLoading}
             >
               <Text className="text-white text-lg font-semibold text-center">
@@ -105,7 +105,7 @@ export default function SignInScreen() {
             {/* Demo sign-in button for testing */}
             <TouchableOpacity
               onPress={handleDemoSignIn}
-              className="bg-green-600 py-3 rounded-lg"
+              className="bg-green-600 py-3 rounded-full mt-4"
               disabled={isLoading}
             >
               <Text className="text-white text-center font-medium">
@@ -113,17 +113,11 @@ export default function SignInScreen() {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push('/auth/signup')}>
-              <Text className="text-blue-600 text-center">
-                Don't have an account? Sign up
+            <View className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
+              <Text className="text-blue-800 text-center text-sm">
+                Need help? Contact your administrator for account access or password reset.
               </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => router.push('/auth/forgot-password')}>
-              <Text className="text-blue-600 text-center">
-                Forgot your password?
-              </Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </Card>
       </View>
