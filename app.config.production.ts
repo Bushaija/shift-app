@@ -4,8 +4,8 @@ import { config as baseConfig } from "./app.config";
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...baseConfig,
   ...config,
-  name: "Healthcare Staffing",
-  slug: "healthcare-staffing",
+  name: "Shift Med",
+  slug: "shift-app",
   version: "1.0.0",
 
   // Production optimizations
@@ -32,7 +32,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     ...baseConfig.ios,
     supportsTablet: true,
-    bundleIdentifier: "com.healthcarestaffing.app",
+    bundleIdentifier: "com.shiftmed.app",
     buildNumber: "1",
     infoPlist: {
       UIBackgroundModes: ["remote-notification"],
@@ -45,7 +45,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   // Android production settings
   android: {
     ...baseConfig.android,
-    package: "com.healthcarestaffing.app",
+    package: "com.shiftmed.app",
     versionCode: 1,
     adaptiveIcon: {
       foregroundImage: "./assets/images/adaptive-icon.png",
@@ -106,7 +106,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   // Experiments for production
   experiments: {
     typedRoutes: true,
-    baseUrl: "/healthcare-staffing",
+    baseUrl: "/shift-med",
   },
 
   // Extra configuration
@@ -116,7 +116,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       projectId: "55477812-99c6-4323-8bd0-cc7a71589fe8",
     },
     // Production API endpoints
-    apiUrl: "https://api.healthcarestaffing.com",
+    apiUrl: "https://api.shiftmed.com",
     // Analytics configuration
     analytics: {
       enabled: true,
@@ -128,6 +128,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   owner: "riwa11",
 
   // Privacy policy and terms
-  privacy: "https://healthcarestaffing.com/privacy",
-  terms: "https://healthcarestaffing.com/terms",
+  privacy: "https://shiftmed.com/privacy",
+  terms: "https://shiftmed.com/terms",
 });

@@ -2,13 +2,13 @@ import type { ConfigContext, ExpoConfig } from "@expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "Healthcare Staffing",
-  slug: "healthcare-staffing",
+  name: "Shift Med",
+  slug: "shift-app",
   newArchEnabled: true,
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
-  scheme: "healthcare-staffing",
+  scheme: "shift-app",
   userInterfaceStyle: "automatic",
   runtimeVersion: {
     policy: "appVersion",
