@@ -64,11 +64,11 @@ export default function HomeScreen() {
         <ScrollView className="flex-1">
           <View className="p-4 flex flex-col gap-4">
             {/* Development Note */}
-            <View className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            {/* <View className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
               <Text className="text-yellow-800 text-sm text-center">
                 🚧 Development Mode - Direct to Home Screen
               </Text>
-            </View>
+            </View> */}
 
             {/* Skeleton Loading */}
             <SkeletonCard />
@@ -86,11 +86,11 @@ export default function HomeScreen() {
       <ScrollView className="flex-1">
         <View className="p-4 flex flex-col gap-4">
           {/* Development Note */}
-          <View className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          {/* <View className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
             <Text className="text-yellow-800 text-sm text-center">
               🚧 Development Mode - Direct to Home Screen
             </Text>
-          </View>
+          </View> */}
 
           {/* Header */}
           <FadeInView duration={400}>

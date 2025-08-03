@@ -88,19 +88,19 @@ export default function JobDetailsScreen() {
     <SafeAreaView className="flex-1 bg-gray-50">
       <ScrollView className="flex-1">
         {/* Header */}
-        <View className="bg-white px-4 py-4 border-b border-gray-200">
+        <View className="px-4 py-4 border-b border-gray-200">
           <View className="flex-row items-center">
-            <TouchableOpacity onPress={() => router.back()} className="mr-4">
+            <TouchableOpacity onPress={() => router.back()}>
               <ArrowLeft size={24} color="#374151" />
             </TouchableOpacity>
-            <View className="flex-1">
-              <Text className="text-lg font-semibold text-gray-900">Job Details</Text>
-              <Text className="text-sm text-gray-600">{shift.facilityName}</Text>
+            <View className="text-center w-full">
+              <Text className="text-center text-lg font-semibold text-gray-900">Job Details</Text>
+              <Text className="text-center text-sm text-gray-600">{shift.facilityName}</Text>
             </View>
           </View>
         </View>
 
-        <View className="p-4 space-y-4">
+        <View className="p-4 space-y-4 flex flex-col gap-2">
           {/* Job Title and Status */}
           <Card className="p-6 bg-white rounded-xl">
             <View className="flex-row justify-between items-start mb-4">
@@ -133,10 +133,10 @@ export default function JobDetailsScreen() {
             <View className="space-y-3">
               <View className="flex-row justify-between items-center">
                 <View className="flex-row items-center">
-                  <DollarSign size={20} color="#10B981" />
+                  {/* <DollarSign size={20} color="#10B981" /> */}
                   <Text className="ml-2 text-gray-700">Hourly Rate</Text>
                 </View>
-                <Text className="text-2xl font-bold text-green-600">${shift.hourlyRate}/hr</Text>
+                <Text className="text-2xl font-bold text-green-600">RWF {shift.hourlyRate}/hr</Text>
               </View>
               <View className="flex-row justify-between items-center">
                 <View className="flex-row items-center">
@@ -148,7 +148,7 @@ export default function JobDetailsScreen() {
               <View className="flex-row justify-between items-center">
                 <Text className="text-gray-700">Total Pay</Text>
                 <Text className="text-xl font-bold text-blue-600">
-                  ${(shift.hourlyRate * shift.totalHours).toLocaleString()}
+                  RWF {(shift.hourlyRate * shift.totalHours).toLocaleString()}
                 </Text>
               </View>
             </View>
