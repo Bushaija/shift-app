@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GreetingHeader } from '@/components/features/home/greeting-header';
+import { OvertimeAlert } from '@/components/features/home/overtime-alert';
+import { TodaysShiftCard } from '@/components/features/home/todays-shift-card';
+import { QuickActions } from '@/components/features/home/quick-actions';
+import { UpcomingShifts } from '@/components/features/home/upcoming-shifts';
 import { ShiftSummaryCard } from '@/components/features/home/shift-summary-card';
-import { WalletSummary } from '@/components/features/home/wallet-summary';
+import { NotificationDemo } from '@/components/features/notifications/notification-demo';
 import { useShiftsStore } from '@/stores/shifts-store';
+import { useNotificationDemo } from '@/hooks/useNotificationDemo';
 import { SkeletonCard, SkeletonShiftCard } from '@/components/ui/skeleton';
 import { ErrorDisplay } from '@/components/ui/error-boundary';
 import { FadeInView, SlideUpView } from '@/components/ui/animations';
@@ -13,6 +18,9 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const { fetchAvailableShifts, fetchUserBookings, isLoading: shiftsLoading, error: shiftsError } = useShiftsStore();
+
+  // Demo notification system
+  useNotificationDemo();
 
   useEffect(() => {
     const loadData = async () => {
@@ -43,6 +51,16 @@ export default function HomeScreen() {
     ]).finally(() => setIsLoading(false));
   };
 
+  const handleClockIn = () => {
+    // TODO: Implement clock in functionality
+    console.log('Clock in pressed');
+  };
+
+  const handleRequestSwap = () => {
+    // TODO: Implement swap request functionality
+    console.log('Request swap pressed');
+  };
+
   if (error || shiftsError) {
     return (
       <SafeAreaView className="flex-1 bg-white">
@@ -63,13 +81,6 @@ export default function HomeScreen() {
       <SafeAreaView className="flex-1 bg-white">
         <ScrollView className="flex-1">
           <View className="p-4 flex flex-col gap-4">
-            {/* Development Note */}
-            {/* <View className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <Text className="text-yellow-800 text-sm text-center">
-                🚧 Development Mode - Direct to Home Screen
-              </Text>
-            </View> */}
-
             {/* Skeleton Loading */}
             <SkeletonCard />
             <SkeletonShiftCard />
@@ -83,28 +94,44 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="flex-1">
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="p-4 flex flex-col gap-4">
-          {/* Development Note */}
-          {/* <View className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <Text className="text-yellow-800 text-sm text-center">
-              🚧 Development Mode - Direct to Home Screen
-            </Text>
-          </View> */}
-
           {/* Header */}
           <FadeInView duration={400}>
             <GreetingHeader />
           </FadeInView>
 
-          {/* Quick Stats */}
+          {/* Overtime Alert */}
           <SlideUpView duration={400} delay={100}>
+            <OvertimeAlert />
+          </SlideUpView>
+
+          {/* Today's Shift */}
+          <SlideUpView duration={400} delay={150}>
+            <TodaysShiftCard />
+          </SlideUpView>
+
+          {/* Quick Actions */}
+          <SlideUpView duration={400} delay={200}>
+            <QuickActions
+              onClockIn={handleClockIn}
+              onRequestSwap={handleRequestSwap}
+            />
+          </SlideUpView>
+
+          {/* Quick Stats */}
+          <SlideUpView duration={400} delay={250}>
             <ShiftSummaryCard />
           </SlideUpView>
 
-          {/* Available Shifts & Recent Activity */}
-          <SlideUpView duration={400} delay={200}>
-            <WalletSummary />
+          {/* Upcoming Shifts */}
+          <SlideUpView duration={400} delay={300}>
+            <UpcomingShifts />
+          </SlideUpView>
+
+          {/* Notification Demo */}
+          <SlideUpView duration={400} delay={350}>
+            <NotificationDemo />
           </SlideUpView>
         </View>
       </ScrollView>

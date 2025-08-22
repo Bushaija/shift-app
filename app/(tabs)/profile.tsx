@@ -12,7 +12,8 @@ import {
   Edit,
   Wallet,
   Calendar,
-  Star
+  Star,
+  Clock
 } from 'lucide-react-native';
 import { useAuthStore } from '@/stores/auth-store';
 import { useShiftsStore } from '@/stores/shifts-store';
@@ -45,11 +46,18 @@ export default function ProfileScreen() {
       onPress: () => router.push('/(tabs)/schedule'),
     },
     {
+      id: 'availability',
+      title: 'Set Availability',
+      icon: Clock,
+      color: '#059669',
+      onPress: () => router.push('/profile/availability'),
+    },
+    {
       id: 'notifications',
       title: 'Notifications',
       icon: Bell,
       color: '#8B5CF6',
-      onPress: () => router.push('/profile/settings'),
+      onPress: () => router.push('/(tabs)/profile/notifications'),
     },
     {
       id: 'settings',

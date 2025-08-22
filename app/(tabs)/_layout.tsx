@@ -173,6 +173,18 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="profile/notifications"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="profile/availability"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

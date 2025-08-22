@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/ui/card';
-import { Calendar, Clock, MapPin, X } from 'lucide-react-native';
+import { Calendar, Clock, MapPin, X, Plus, Minus } from 'lucide-react-native';
 import { useShiftsStore } from '@/stores/shifts-store';
 
 export default function ScheduleScreen() {
-  const [activeTab, setActiveTab] = useState('upcoming');
+  const [activeTab, setActiveTab] = useState('schedule');
   const { userBookings, fetchUserBookings, cancelBooking, isLoading } = useShiftsStore();
 
   useEffect(() => {
@@ -14,10 +14,48 @@ export default function ScheduleScreen() {
   }, [fetchUserBookings]);
 
   const tabs = [
+    { id: 'schedule', label: 'Schedule' },
     { id: 'upcoming', label: 'Upcoming' },
     { id: 'ongoing', label: 'Ongoing' },
     { id: 'past', label: 'Past' },
   ];
+
+  // Mock weekly schedule data - replace with real data
+  const weeklySchedule = [
+    { day: 'Mon', status: 'assigned', shift: 'D' },
+    { day: 'Tue', status: 'assigned', shift: 'N' },
+    { day: 'Wed', status: 'available', shift: 'OFF' },
+    { day: 'Thu', status: 'assigned', shift: 'D' },
+    { day: 'Fri', status: 'assigned', shift: 'D' },
+    { day: 'Sat', status: 'unavailable', shift: 'OFF' },
+    { day: 'Sun', status: 'unavailable', shift: 'OFF' },
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'assigned':
+        return 'bg-blue-500';
+      case 'available':
+        return 'bg-green-500';
+      case 'unavailable':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-300';
+    }
+  };
+
+  const getStatusTextColor = (status: string) => {
+    switch (status) {
+      case 'assigned':
+        return 'text-blue-700';
+      case 'available':
+        return 'text-green-700';
+      case 'unavailable':
+        return 'text-red-700';
+      default:
+        return 'text-gray-700';
+    }
+  };
 
   const getShiftsForTab = () => {
     const now = new Date();
@@ -43,23 +81,6 @@ export default function ScheduleScreen() {
           return false;
       }
     });
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'confirmed':
-        return 'bg-green-100 text-green-800';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'ongoing':
-        return 'bg-blue-100 text-blue-800';
-      case 'completed':
-        return 'bg-gray-100 text-gray-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
   };
 
   const formatDate = (dateString: string) => {
@@ -106,17 +127,179 @@ export default function ScheduleScreen() {
     );
   };
 
+  const renderScheduleView = () => (
+    <View className="space-y-6">
+      {/* Week Header */}
+      <View className="bg-white rounded-xl p-4">
+        <Text className="text-lg font-semibold text-gray-900 mb-4">
+          Week of March 15, 2024
+        </Text>
+
+        {/* Schedule Grid */}
+        <View className="space-y-3">
+          <View className="flex-row justify-between">
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+              <Text key={day} className="text-sm font-semibold text-gray-700 w-10 text-center">
+                {day}
+              </Text>
+            ))}
+          </View>
+
+          <View className="flex-row justify-between">
+            {weeklySchedule.map((item, index) => (
+              <View key={index} className="w-10 h-10 items-center justify-center">
+                <View className={`w-8 h-8 rounded-full ${getStatusColor(item.status)} items-center justify-center`}>
+                  <Text className="text-xs font-bold text-white">
+                    {item.shift}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+
+      {/* Legend */}
+      <Card className="p-4 bg-white rounded-xl">
+        <Text className="text-base font-semibold text-gray-900 mb-3">Legend:</Text>
+        <View className="space-y-2">
+          <View className="flex-row items-center">
+            <View className="w-4 h-4 bg-blue-500 rounded-full mr-3" />
+            <Text className="text-gray-700">Assigned</Text>
+          </View>
+          <View className="flex-row items-center">
+            <View className="w-4 h-4 bg-green-500 rounded-full mr-3" />
+            <Text className="text-gray-700">Available</Text>
+          </View>
+          <View className="flex-row items-center">
+            <View className="w-4 h-4 bg-red-500 rounded-full mr-3" />
+            <Text className="text-gray-700">Unavailable</Text>
+          </View>
+        </View>
+      </Card>
+
+      {/* Action Buttons */}
+      <View className="flex flex-col gap-4">
+        <TouchableOpacity className="bg-green-500 py-3 px-6 rounded-xl flex-row items-center justify-center">
+          <Plus size={20} color="white" />
+          <Text className="text-white font-semibold ml-2">Set Availability</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity className="bg-yellow-500 py-3 px-6 rounded-xl flex-row items-center justify-center">
+          <Minus size={20} color="white" />
+          <Text className="text-white font-semibold ml-2">Request Time Off</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Weekly Summary */}
+      <Card className="p-4 bg-white rounded-xl">
+        <Text className="text-base font-semibold text-gray-900 mb-3">This Week Summary:</Text>
+        <View className="space-y-2">
+          <View className="flex-row justify-between">
+            <Text className="text-gray-600">Total Hours:</Text>
+            <Text className="text-gray-900 font-semibold">36</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-gray-600">Overtime:</Text>
+            <Text className="text-gray-900 font-semibold">0</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-gray-600">Break Compliance:</Text>
+            <Text className="text-green-600 font-semibold">✅</Text>
+          </View>
+        </View>
+      </Card>
+    </View>
+  );
+
+  const renderShiftsView = () => (
+    <View className="space-y-4">
+      {getShiftsForTab().map((booking) => (
+        <Card key={booking.id} className="p-4 bg-white rounded-xl">
+          <View className="flex-row justify-between items-start mb-3">
+            <View className="flex-1">
+              <Text className="text-lg font-semibold text-gray-900">
+                {booking.shift?.title}
+              </Text>
+              <Text className="text-gray-600">{booking.shift?.facilityName}</Text>
+            </View>
+            <View className={`px-2 py-1 rounded ${getStatusColor(booking.status)}`}>
+              <Text className="text-xs font-medium capitalize text-white">
+                {booking.status}
+              </Text>
+            </View>
+          </View>
+
+          <View className="space-y-2 mb-3">
+            <View className="flex-row items-center">
+              <Calendar size={16} color="#6B7280" />
+              <Text className="ml-2 text-gray-600">
+                {formatDate(booking.shift?.shiftDate || '')}
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+              <Clock size={16} color="#6B7280" />
+              <Text className="ml-2 text-gray-600">
+                {formatTime(booking.shift?.startTime || '', booking.shift?.endTime || '')}
+              </Text>
+            </View>
+            {booking.shift?.location && (
+              <View className="flex-row items-center">
+                <MapPin size={16} color="#6B7280" />
+                <Text className="ml-2 text-gray-600">{booking.shift.location}</Text>
+              </View>
+            )}
+          </View>
+
+          <View className="flex-row justify-between items-center">
+            <Text className="text-lg font-bold text-blue-600">
+              ${booking.shift?.hourlyRate}/hr
+            </Text>
+            {activeTab === 'upcoming' && booking.status !== 'cancelled' && (
+              <TouchableOpacity
+                className="bg-red-100 px-3 py-1 rounded flex-row items-center"
+                onPress={() => handleCancelBooking(booking.id, booking.shift?.title || '')}
+                disabled={isLoading}
+              >
+                <X size={14} color="#DC2626" />
+                <Text className="text-red-600 text-sm font-medium ml-1">
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </Card>
+      ))}
+
+      {getShiftsForTab().length === 0 && (
+        <Card className="p-8 bg-white rounded-xl">
+          <View className="items-center">
+            <Calendar size={48} color="#9CA3AF" />
+            <Text className="text-lg font-medium text-gray-900 mt-4">
+              No {activeTab} shifts
+            </Text>
+            <Text className="text-gray-600 text-center mt-2">
+              {activeTab === 'upcoming' && "You don't have any upcoming shifts scheduled."}
+              {activeTab === 'ongoing' && "You don't have any ongoing shifts."}
+              {activeTab === 'past' && "You don't have any past shifts."}
+            </Text>
+          </View>
+        </Card>
+      )}
+    </View>
+  );
+
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       <ScrollView className="flex-1">
         <View className="p-4">
           {/* Header */}
           <View className="flex flex-col justify-center items-center mb-6 py-4">
-            <Text className="text-lg font-bold text-gray-900">
+            <Text className="text-2xl font-bold text-gray-900">
               My Schedule
             </Text>
             <Text className="text-gray-600 mt-1">
-              Manage your shifts and bookings
+              Manage your shifts and availability
             </Text>
           </View>
 
@@ -126,7 +309,7 @@ export default function ScheduleScreen() {
               <TouchableOpacity
                 key={tab.id}
                 onPress={() => setActiveTab(tab.id)}
-                className={`flex-1 py-2 px-4 rounded-md ${activeTab === tab.id
+                className={`flex-1 py-2 px-2 rounded-md ${activeTab === tab.id
                   ? 'bg-blue-600'
                   : 'bg-transparent'
                   }`}
@@ -143,81 +326,8 @@ export default function ScheduleScreen() {
             ))}
           </View>
 
-          {/* Shifts List */}
-          <View className="space-y-4 flex flex-col gap-4">
-            {getShiftsForTab().map((booking) => (
-              <Card key={booking.id} className="p-4 bg-white rounded-xl">
-                <View className="flex-row justify-between items-start mb-3">
-                  <View className="flex-1">
-                    <Text className="text-lg font-semibold text-gray-900">
-                      {booking.shift?.title}
-                    </Text>
-                    <Text className="text-gray-600">{booking.shift?.facilityName}</Text>
-                  </View>
-                  <View className={`px-2 py-1 rounded ${getStatusColor(booking.status)}`}>
-                    <Text className="text-xs font-medium capitalize">
-                      {booking.status}
-                    </Text>
-                  </View>
-                </View>
-
-                <View className="space-y-2 mb-3">
-                  <View className="flex-row items-center">
-                    <Calendar size={16} color="#6B7280" />
-                    <Text className="ml-2 text-gray-600">
-                      {formatDate(booking.shift?.shiftDate || '')}
-                    </Text>
-                  </View>
-                  <View className="flex-row items-center">
-                    <Clock size={16} color="#6B7280" />
-                    <Text className="ml-2 text-gray-600">
-                      {formatTime(booking.shift?.startTime || '', booking.shift?.endTime || '')}
-                    </Text>
-                  </View>
-                  {booking.shift?.location && (
-                    <View className="flex-row items-center">
-                      <MapPin size={16} color="#6B7280" />
-                      <Text className="ml-2 text-gray-600">{booking.shift.location}</Text>
-                    </View>
-                  )}
-                </View>
-
-                <View className="flex-row justify-between items-center">
-                  <Text className="text-lg font-bold text-blue-600">
-                    ${booking.shift?.hourlyRate}/hr
-                  </Text>
-                  {activeTab === 'upcoming' && booking.status !== 'cancelled' && (
-                    <TouchableOpacity
-                      className="bg-red-100 px-3 py-1 rounded flex-row items-center"
-                      onPress={() => handleCancelBooking(booking.id, booking.shift?.title || '')}
-                      disabled={isLoading}
-                    >
-                      <X size={14} color="#DC2626" />
-                      <Text className="text-red-600 text-sm font-medium ml-1">
-                        Cancel
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </Card>
-            ))}
-
-            {getShiftsForTab().length === 0 && (
-              <Card className="p-8 bg-white rounded-xl">
-                <View className="items-center">
-                  <Calendar size={48} color="#9CA3AF" />
-                  <Text className="text-lg font-medium text-gray-900 mt-4">
-                    No {activeTab} shifts
-                  </Text>
-                  <Text className="text-gray-600 text-center mt-2">
-                    {activeTab === 'upcoming' && "You don't have any upcoming shifts scheduled."}
-                    {activeTab === 'ongoing' && "You don't have any ongoing shifts."}
-                    {activeTab === 'past' && "You don't have any past shifts."}
-                  </Text>
-                </View>
-              </Card>
-            )}
-          </View>
+          {/* Content based on active tab */}
+          {activeTab === 'schedule' ? renderScheduleView() : renderShiftsView()}
         </View>
       </ScrollView>
     </SafeAreaView>

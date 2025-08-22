@@ -36,22 +36,30 @@ export function ShiftSummaryCard({ className = '' }: ShiftSummaryCardProps) {
   ).length;
 
   return (
-    <View className={`flex-row gap-2 space-x-4 ${className}`}>
-      <Card className="flex flex-col gap-2 p-4 bg-white rounded-xl">
-        <Text className="text-center text-2xl font-bold text-blue-600">{shiftsThisMonth}</Text>
-        <Text className="text-sm text-gray-600">Shifts this month</Text>
-      </Card>
-      <Card className="flex flex-col gap-2 p-4 bg-white rounded-xl">
-        <View className="flex flex-row gap-2 items-center justify-center ">
-          <Text className='text-2xl font-bold text-green-600'>{totalEarnings.toLocaleString()}</Text>
-          <Text className="text-sm text-green-600">RWF</Text>
+    <Card className={`p-4 bg-white ${className}`}>
+      <Text className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</Text>
+
+      <View className="flex-row gap-4">
+        <View className="flex-1 items-center">
+          <Text className="text-2xl font-bold text-blue-600">{shiftsThisMonth}</Text>
+          <Text className="text-sm text-gray-600 text-center">Shifts this month</Text>
         </View>
-        <Text className="text-sm text-gray-600">Total earnings</Text>
-      </Card>
-      <Card className="flex flex-col gap-2 p-4 bg-white rounded-xl">
-        <Text className="text-center text-2xl font-bold text-purple-600">{upcomingShifts}</Text>
-        <Text className="text-sm text-gray-600">Upcoming shifts</Text>
-      </Card>
-    </View>
+
+        <View className="flex-1 items-center">
+          <View className="flex-row items-center gap-1">
+            <Text className="text-2xl font-bold text-green-600">
+              {totalEarnings.toLocaleString()}
+            </Text>
+            <Text className="text-sm text-green-600">RWF</Text>
+          </View>
+          <Text className="text-sm text-gray-600 text-center">Total earnings</Text>
+        </View>
+
+        <View className="flex-1 items-center">
+          <Text className="text-2xl font-bold text-purple-600">{upcomingShifts}</Text>
+          <Text className="text-sm text-gray-600 text-center">Upcoming shifts</Text>
+        </View>
+      </View>
+    </Card>
   );
 }

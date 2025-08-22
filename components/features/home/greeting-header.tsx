@@ -20,12 +20,12 @@ export function GreetingHeader({ className = '' }: GreetingHeaderProps) {
   const greeting = getGreeting();
 
   return (
-    <View className={`flex flex-col gap-1 justify-center items-center py-4 ${className}`}>
-      <Text className="text-xl font-semibold text-gray-900">
-        {greeting}, {firstName}! 👋
+    <View className={`flex flex-col gap-2 justify-center items-center py-6 ${className}`}>
+      <Text className="text-2xl font-semibold text-gray-900">
+        {greeting}, {firstName}
       </Text>
-      <Text className="text-gray-600">
-        Ready to find your next shift?
+      <Text className="text-gray-600 text-center">
+        Welcome to your shift dashboard
       </Text>
     </View>
   );
